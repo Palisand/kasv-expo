@@ -4,6 +4,10 @@ _This project was bootstrapped with [Create React Native App](https://github.com
 
 How to scroll to inputs on Android when using [Expo](https://expo.io/) and [react-native-keyboard-aware-scroll-view](https://github.com/APSL/react-native-keyboard-aware-scroll-view/) (KASV).
 
+### How?
+
+See _`App.js`_.
+
 ### Why?
 
 - React Native's `KeyboardAvoidingView` is [generally unstable](https://github.com/facebook/react-native/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20keyboardavoidingview%20in%3Atitle%20).
