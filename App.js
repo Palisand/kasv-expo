@@ -1,8 +1,35 @@
 import React, {Component} from 'react';
-import ReactNative, { StyleSheet, Text, View, TextInput, ScrollView, Platform } from 'react-native';
+import ReactNative, { Animated, Keyboard, StyleSheet, Text, View, TextInput, ScrollView, Platform } from 'react-native';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 export default class App extends Component {
+
+  state = {
+    keyboardHeight: new Animated.Value(0)
+  };
+
+  animateKeyboardHeight = (toValue, duration) => {
+    Animated.timing(
+      this.state.keyboardHeight,
+      {toValue, duration},
+    ).start();
+  };
+
+  /**
+   * From https://facebook.github.io/react-native/docs/keyboard.html#addlistener
+   * "Note that if you set android:windowSoftInputMode to adjustResize or adjustNothing,
+   * only keyboardDidShow and keyboardDidHide events will available on Android."
+   */
+  componentWillMount() {
+    if (Platform.OS === "android") {
+      this.keyboardShowListener = Keyboard.addListener("keyboardDidShow", ({endCoordinates}) => {
+        this.animateKeyboardHeight(endCoordinates.height, 0)
+      });
+      this.keyboardHideListener = Keyboard.addListener("keyboardDidHide", () => {
+        this.animateKeyboardHeight(0, 300)
+      })
+    }
+  }
 
   scrollToInput = (reactNode) => {
     this.view.scrollToFocusedInput(reactNode)
@@ -35,6 +62,7 @@ export default class App extends Component {
           style={styles.input}
         />
         {/*{spacer}*/}
+        <Animated.View style={{height: this.state.keyboardHeight}}/>
       </KeyboardAwareScrollView>
     );
   }
